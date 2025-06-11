@@ -1,0 +1,199 @@
+{{ define "MailboxConfig" }}
+<!DOCTYPE HTML>
+<html lang="pt-BR">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <title>{{ .Title }}</title>
+</head>
+
+<body>
+
+  {{ template "NavBarSearch" . }}
+
+  <div class="container-fluid">
+    <div class="row">
+
+      {{ template "SideBar" . }}
+
+      <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+        {{ template "MessageArea" . }}
+        <div class="my-3 p-3 bg-white rounded shadow-sm">
+          <form action="/mailboxconfig" method="post">
+            <div class="d-flex justify-content-between align-items-center w-100 border-bottom border-gray pb-2 mb-0">
+              <h5>{{LanguageForID "Mailbox"}}</h5>
+              <div>
+                <button class="btn btn-outline-secondary btn-sm" type="submit" id="save" name="op" value="save"
+                  data-toggle="tooltip" data-placement="bottom" title="{{LanguageForID "Save"}}">
+                  <svg class="bi bi-check2" width="1.5em" height="1.5em" viewBox="0 0 16 16" fill="currentColor"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd"
+                      d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z" />
+                  </svg>
+                </button>
+                <button class="btn btn-outline-secondary btn-sm" type="button" id="reset" data-toggle="tooltip"
+                  data-placement="bottom" title="{{LanguageForID "New"}}">
+                  <svg class="bi bi-file-earmark" width="1.5em" height="1.5em" viewBox="0 0 16 16" fill="currentColor"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path
+                      d="M4 1h5v1H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V6h1v7a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2z" />
+                    <path d="M9 4.5V1l5 5h-3.5A1.5 1.5 0 0 1 9 4.5z" />
+                  </svg>
+                </button>
+                <button class="btn btn-outline-secondary btn-sm" type="submit" id="delete" name="op" value="delete"
+                  data-toggle="tooltip" data-placement="bottom" title="{{LanguageForID "Delete"}}">
+                  <svg class="bi bi-trash" width="1.5em" height="1.5em" viewBox="0 0 16 16" fill="currentColor"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path
+                      d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
+                    <path fill-rule="evenodd"
+                      d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+            <input type="hidden" id="mid" name="mid" value="{{ .Record.FilterMailbox }}">
+
+            <div class="bg-light rounded p-3">
+              <div class="row">
+                <div class="form-group col">
+                  <label for="address">{{LanguageForID "MailboxName"}}</label>
+                  <input type="text" class="form-control" id="name" name="name" aria-describedby="nameHelp"
+                    placeholder="{{LanguageForID "Identification"}}" value="{{ .Record.Mailbox.Name }}">
+                  <small id="nameHelp" class="form-text text-muted">{{LanguageForID "MailboxNameDescription"}}</small>
+                </div>
+              </div>
+              <div class="row">
+                <div class="form-group col">
+                  <label for="address">{{LanguageForID "ServerAddress"}}</label>
+                  <input type="text" class="form-control" id="address" name="address" aria-describedby="addressHelp"
+                    placeholder="{{LanguageForID "Address"}}" value="{{ .Record.Mailbox.Address }}">
+                  <small id="addressHelp" class="form-text text-muted">{{LanguageForID "ServerAddressDescription"}}</small>
+                </div>
+                <div class="form-group col">
+                  <label for="port">{{LanguageForID "ServerPort"}}</label>
+                  <input type="number" class="form-control" id="port" name="port" aria-describedby="portHelp"
+                    placeholder="{{LanguageForID "Port"}}" value="{{ .Record.Mailbox.Port }}">
+                  <small id="portHelp" class="form-text text-muted">{{LanguageForID "ServerPortDescription"}}</small>
+                </div>
+              </div>
+              <div class="row">
+                <div class="form-group col">
+                  <label for="user">{{LanguageForID "UserAccess"}}</label>
+                  <input type="text" class="form-control" id="user" name="user" aria-describedby="userHelp"
+                    placeholder="{{LanguageForID "User"}}" value="{{ .Record.Mailbox.User }}">
+                  <small id="userHelp" class="form-text text-muted">{{LanguageForID "UserAccessDescription"}}</small>
+                </div>
+                <div class="form-group col">
+                  <label for="password">{{LanguageForID "PasswordAccess"}}</label>
+                  <input type="password" class="form-control" id="password" name="password"
+                    aria-describedby="passwordHelp" placeholder="{{LanguageForID "Password"}}" value="{{ .Record.Mailbox.Password }}">
+                  <small id="passwordHelp" class="form-text text-muted">{{LanguageForID "PasswordDescription"}}</small>
+                </div>
+              </div>
+              <div class="row">
+                <div class="form-group col">
+                  <label for="user">{{LanguageForID "MaxSessions"}}</label>
+                  <input type="number" class="form-control" id="sessions" name="sessions"
+                    aria-describedby="sessionsHelp" placeholder="{{LanguageForID "Sessions"}}" value="{{ .Record.Mailbox.Sessions }}">
+                  <small id="sessionsHelp" class="form-text text-muted">{{LanguageForID "MaxSessionsDescription"}}</small>
+                </div>
+                <div class="form-group col">
+                  <label for="connectionInterval">{{LanguageForID "ConnectionInterval"}}</label>
+                  <input type="number" class="form-control" id="connectionInterval" name="connectionInterval"
+                    aria-describedby="connectionIntervalHelp" placeholder="{{LanguageForID "Minutes"}}"
+                    value="{{ .Record.Mailbox.ConnectionInterval }}">
+                  <small id="connectionIntervalHelp" class="form-text text-muted">{{LanguageForID "ConnectionIntervalDescription"}}</small>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col">
+                  <div class="custom-control custom-switch">
+                    <input class="custom-control-input" type="checkbox" id="disabled" name="disabled" value="yes"
+                      {{ if .Record.Mailbox.Disabled }}checked{{ end }}>
+                    <label class="custom-control-label" for="disabled">{{LanguageForID "DisableMailbox"}}</label>
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="custom-control custom-switch">
+                    <input class="custom-control-input" type="checkbox" id="passwordAuthentication"
+                      name="passwordAuthentication" value="yes"
+                      {{ if .Record.Mailbox.PasswordAuthentication }}checked{{ end }}>
+                    <label class="custom-control-label" for="passwordAuthentication">{{LanguageForID "AuthenticatePassword"}}</label>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <div class="custom-control custom-switch">
+                    <input class="custom-control-input" type="checkbox" id="validateHostKey" name="validateHostKey"
+                      value="yes" {{ if .Record.Mailbox.ValidateHostKey }}checked{{ end }}>
+                    <label class="custom-control-label" for="validateHostKey">{{LanguageForID "ValidatePulicKey"}}</label>
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="custom-control custom-switch">
+                    <input class="custom-control-input" type="checkbox" id="publicKeyAuthentication"
+                      name="publicKeyAuthentication" value="yes"
+                      {{ if .Record.Mailbox.PublicKeyAuthentication }}checked{{ end }}>
+                    <label class="custom-control-label" for="publicKeyAuthentication">{{LanguageForID "AuthenticatePublicKey"}}</label>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <div class="custom-control custom-switch">
+                    <input class="custom-control-input" type="checkbox" id="connectionByProxy" name="connectionByProxy"
+                      value="yes" {{ if .Record.Mailbox.ConnectionByProxy }}checked{{ end }}>
+                    <label class="custom-control-label" for="connectionByProxy">{{LanguageForID "UseProxy"}}</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </form>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Optional JavaScript -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="/js/jquery.min.js"></script>
+  <script src="/js/popper.min.js"></script>
+  <script src="/js/bootstrap.min.js"></script>
+
+  <script>
+    // define as funções para processamento da pagina
+    $(document).ready(function () {
+      // habilita o uso dos tooltips
+      $('[data-toggle="tooltip"]').tooltip();
+      // carrega o template de exemplo para o campo
+      $("#reset").click(function () {
+        $("#id").val("");
+        $("#name").val("");
+        $("#address").val("");
+        $("#port").val("22");
+        $("#user").val("");
+        $("#password").val("");
+        $("#disabled").prop("checked", false);
+        $("#validateHostKey").prop("checked", false);
+        $("#passwordAuthentication").prop("checked", true);
+        $("#publicKeyAuthentication").prop("checked", true);
+        $("#name").focus();
+      });
+    });
+  </script>
+</body>
+
+</html>
+{{ end }}

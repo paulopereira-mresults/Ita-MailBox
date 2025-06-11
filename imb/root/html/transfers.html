@@ -1,0 +1,191 @@
+{{ define "Transfers" }}
+<!DOCTYPE HTML>
+<html lang="pt-BR">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+
+    <title>{{ .Title }}</title>
+</head>
+
+<body>
+
+    {{ template "NavBarSearch" . }}
+
+    <div class="container-fluid">
+        <div class="row">
+
+            {{ template "SideBar" . }}
+
+            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+                {{ template "MessageArea" . }}
+                <div class="my-3 p-3 bg-white rounded shadow-sm">
+                    <div
+                        class="d-flex justify-content-between align-items-center w-100 border-bottom border-gray pb-2 mb-0">
+                        <h5>{{ LanguageForID "Transfers" }}</h5>
+                        <a class="btn btn-outline-secondary btn-sm" href="/transfers?op=clear" data-toggle="tooltip" data-placement="bottom" title="{{ LanguageForID "ClearTransfers" }}">
+                            <svg class="bi bi-trash" width="1.5em" height="1.5em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                                <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                            </svg>
+                        </a>
+                    </div>
+
+                    {{ $iconWaiting := `<svg width="1.5em" height="1.5em" viewBox="0 0 16 16" class="bi bi-clock" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm8-7A8 8 0 1 1 0 8a8 8 0 0 1 16 0z"/>
+                        <path fill-rule="evenodd" d="M7.5 3a.5.5 0 0 1 .5.5v5.21l3.248 1.856a.5.5 0 0 1-.496.868l-3.5-2A.5.5 0 0 1 7 9V3.5a.5.5 0 0 1 .5-.5z"/>
+                    </svg>` }}
+                    {{ $iconRunning := `<svg width="1.5em" height="1.5em" viewBox="0 0 16 16" class="bi bi-arrow-down-up" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" d="M11 3.5a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5z"/>
+                        <path fill-rule="evenodd" d="M10.646 2.646a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L11 3.707 8.354 6.354a.5.5 0 1 1-.708-.708l3-3zm-9 7a.5.5 0 0 1 .708 0L5 12.293l2.646-2.647a.5.5 0 1 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 0 1 0-.708z"/>
+                        <path fill-rule="evenodd" d="M5 2.5a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-1 0V3a.5.5 0 0 1 .5-.5z"/>
+                    </svg>` }}
+                    {{ $iconSuccess := `<svg width="1.5em" height="1.5em" viewBox="0 0 16 16" class="bi bi-check-circle text-success" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                        <path fill-rule="evenodd" d="M10.97 4.97a.75.75 0 0 1 1.071 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.236.236 0 0 1 .02-.022z"/>
+                    </svg>` }}
+                    {{ $iconAlert := `<svg width="1.5em" height="1.5em" viewBox="0 0 16 16" class="bi bi-exclamation-circle text-danger" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                        <path d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995z"/>
+                    </svg>` }}
+
+                    {{ range $i, $e := .Records.Transfers }}
+                        {{ $started := "" }}
+                        {{ $ended := "" }}
+                        {{ $status := LanguageForID "Waiting" }}
+                        {{ $elapsed := "" }}
+                        {{ $statusIcon := $iconWaiting }}
+                        {{ if not $e.Started.IsZero }}
+                            {{ $started = $e.Started.Format "02/01/2006 15:04:05" }}
+                            {{ $elapsed = ElapsedFromNow $e.Started }}
+                            {{ if $e.Ended.IsZero }}
+                                {{ if $e.Mode.IsUpload }}
+                                    {{ $status = print ( LanguageForID "Sending" ) " " $e.PercentageDone }}
+                                {{ else }}
+                                    {{ $status = print ( LanguageForID "Receiving" ) " " $e.PercentageDone }}
+                                {{ end }}
+                                {{ $statusIcon = $iconRunning }}
+                            {{ else }}
+                                {{ $ended = $e.Ended.Format "02/01/2006 15:04:05" }}
+                                {{ if $e.Mode.IsUpload }}
+                                    {{ if eq $e.Status 0 }}
+                                        {{ $status = LanguageForID "Sent" }}
+                                        {{ $statusIcon = $iconSuccess }}
+                                    {{ else }}
+                                        {{ $status = LanguageForID "ErrorOnSend" }}
+                                        {{ $statusIcon = $iconAlert }}
+                                    {{ end }}
+                                {{ else }}
+                                    {{ if eq $e.Status 0 }}
+                                        {{ $status = LanguageForID "Received" }}
+                                        {{ $statusIcon = $iconSuccess }}
+                                    {{ else }}
+                                        {{ $status = LanguageForID "ErrorOnReceiving" }}
+                                        {{ $statusIcon = $iconAlert }}
+                                    {{ end }}
+                                {{ end }}
+                            {{ end}}
+                        {{ end}}
+                        <div class="row bd-callout m-1">
+                            <div class="col">
+                                <div class="row">
+                                    <div class="col hover-info">
+                                        <b>{{ Add $i 1}}</b>
+                                        <svg class="mx-2" width="1.5em" height="1.5em" viewBox="0 0 16 16" class="bi bi-info-circle mx-2" fill="currentColor" xmlns="http://www.w3.org/2000/svg" data-toggle="collapse" data-target="#transfer-info-{{ $i }}" aria-expanded="false" aria-controls="transfer-info-{{ $i }}">
+                                            <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                            <path d="M8.93 6.588l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588z"/>
+                                            <circle cx="8" cy="4.5" r="1"/>
+                                        </svg>                                        
+                                        {{ if eq $elapsed "" }}{{ LanguageForID "Waiting" }}{{ else }}{{ $elapsed }} {{ LanguageForID "ago" }}{{ end }}
+                                    </div>
+                                    <div class="col">
+                                        <svg class="mx-2" width="1.5em" height="1.5em" viewBox="0 0 16 16" class="bi bi-briefcase" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd" d="M0 12.5A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-6h-1v6a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-6H0v6z"/>
+                                            <path fill-rule="evenodd" d="M0 4.5A1.5 1.5 0 0 1 1.5 3h13A1.5 1.5 0 0 1 16 4.5v2.384l-7.614 2.03a1.5 1.5 0 0 1-.772 0L0 6.884V4.5zM1.5 4a.5.5 0 0 0-.5.5v1.616l6.871 1.832a.5.5 0 0 0 .258 0L15 6.116V4.5a.5.5 0 0 0-.5-.5h-13zM5 2.5A1.5 1.5 0 0 1 6.5 1h3A1.5 1.5 0 0 1 11 2.5V3h-1v-.5a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5V3H5v-.5z"/>
+                                        </svg>                                        
+                                        {{ $e.Mailbox.Name }}
+                                    </div>
+                                    <div class="col">
+                                        <svg class="mx-2" width="1.5em" height="1.5em" viewBox="0 0 16 16" class="bi bi-file-earmark" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M4 1h5v1H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V6h1v7a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2z"/>
+                                            <path d="M9 4.5V1l5 5h-3.5A1.5 1.5 0 0 1 9 4.5z"/>
+                                        </svg>                                        
+                                        {{ $e.LocalFileName }}
+                                    </div>
+                                    <div class="col">{{ FileSize $e.Size }}</div>
+                                    <div class="col"><span class="mx-2">{{ $statusIcon }}</span>{{ $status }}</div>
+                                    <div class="col">{{ TransferRate $e.Rate }}</div>
+                                </div>
+                                <div class="p-2 m-2 border rounded collapse" id="transfer-info-{{ $i }}">
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="d-block">
+                                                <p class="small m-1 p-0">{{ LanguageForID "Start" }}</p>
+                                                <p class="ml-3 p-0">{{ $started }}</p>
+                                            </div>
+                                            <div class="d-block">
+                                                <p class="small m-1 p-0">{{ LanguageForID "End" }}</p>
+                                                <p class="ml-3 p-0">{{ $ended }}</p>
+                                            </div>
+                                        </div>                                            
+                                        <div class="col">
+                                            <div class="d-block">
+                                                <p class="small m-1 p-0">{{ LanguageForID "LocalFolder" }}</p>
+                                                <p class="ml-3 p-0">{{ $e.LocalFolderName }}</p>
+                                            </div>
+                                            <div class="d-block">
+                                                <p class="small m-1 p-0">{{ LanguageForID "RemoteFolder" }}</p>
+                                                <p class="ml-3 p-0">{{ $e.RemoteFolderName }}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {{ if gt (len $e.Messages) 0 }}
+                                        <hr>
+                                    {{ end }}
+                                    {{ range $k, $m := $e.Messages }}
+                                        <div class="row">
+                                            <div class="col-2">{{ $m.Date.Format "02/01/2006 15:04:05" }}</div>
+                                            <div class="col">{{ $m.Message }}</div>
+                                        </div>
+                                    {{ end }}
+                                </div>                                    
+                            </div>                                
+                        </div>
+                    {{ end }}
+                </div>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/popper.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+
+    <script>
+        // define as funções para processamento da pagina
+        $(document).ready(function () {
+            // habilita o uso dos tooltips
+            $('[data-toggle="tooltip"]').tooltip({ boundary: 'window' });
+            // atualiza automaticamente
+            $(document).ready(function() {
+                setInterval(function() {
+                    //window.location.replace(location.pathname);
+                    window.location = window.location.pathname;
+                }, 15000);
+            });
+        });
+    </script>
+
+</body>
+
+</html>
+{{ end }}

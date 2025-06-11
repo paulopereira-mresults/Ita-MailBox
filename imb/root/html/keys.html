@@ -1,0 +1,167 @@
+{{ define "Keys" }}
+<!DOCTYPE HTML>
+<html lang="pt-BR">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <title>{{ .Title }}</title>
+</head>
+
+<body>
+
+  {{ template "NavBarSearch" . }}
+
+  <div class="container-fluid">
+    <div class="row">
+
+      {{ template "SideBar" . }}
+
+      <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+        {{ template "MessageArea" . }}
+        <div class="my-3 p-3 bg-white rounded shadow-sm">
+          <form action="/keys" method="post">
+            <div class="d-flex justify-content-between align-items-center w-100 border-bottom border-gray pb-2 mb-0">
+              <h5>{{ LanguageForID "CreateKey" }}</h5>
+              <div>
+                <button class="btn btn-outline-secondary btn-sm" type="submit" id="create" name="op" value="create"
+                  data-toggle="tooltip" data-placement="bottom" title="{{ LanguageForID "CreateKey" }}">
+                  <svg class="bi bi-check2" width="1.5em" height="1.5em" viewBox="0 0 16 16" fill="currentColor"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd"
+                      d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z" />
+                  </svg>
+                </button>
+                <button class="btn btn-outline-secondary btn-sm" type="button" id="reset" data-toggle="tooltip"
+                  data-placement="bottom" title="{{ LanguageForID "New" }}">
+                  <svg class="bi bi-file-earmark" width="1.5em" height="1.5em" viewBox="0 0 16 16" fill="currentColor"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path
+                      d="M4 1h5v1H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V6h1v7a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2z" />
+                    <path d="M9 4.5V1l5 5h-3.5A1.5 1.5 0 0 1 9 4.5z" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+            <div class="bg-light rounded p-3">
+              <div class="row">
+                <div class="form-group col-4">
+                  <label for="algorithm">{{ LanguageForID "Algorithm" }}</label>
+                  <select class="form-control" id="algorithm" name="algorithm" aria-describedby="algorithmHelp" placeholder="Selecione o Algoritmo">
+                    <option value="rsa-1024">RSA 1024 bits</option>
+                    <option value="rsa-2048" selected>RSA 2048 bits</option>
+                    <option value="rsa-4096">RSA 4096 bits</option>
+                  </select>
+                  <small id="algorithmHelp" class="form-text text-muted">{{ LanguageForID "AlgorithmDescription" }}</small>
+                </div>
+                <div class="form-group col">
+                  <label for="password">{{ LanguageForID "NewKeyPassowrd" }}</label>
+                  <input type="password" class="form-control" id="password" name="password" aria-describedby="passwordHelp"
+                    placeholder="{{ LanguageForID "Password" }}">
+                  <small id="passwordHelp" class="form-text text-muted">{{ LanguageForID "NewKeyPassowrdDescription" }}</small>
+                </div>
+              </div>
+              <div class="custom-control custom-switch">
+                <input class="custom-control-input" type="checkbox" id="useAsDefault"
+                  name="useAsDefault" value="yes" checked>
+                <label class="custom-control-label" for="useAsDefault">{{ LanguageForID "UseNewKey" }}</label>
+              </div>
+              <p class="small mt-3"><strong>{{ LanguageForID "Note" }}: </strong>{{ LanguageForID "UseNewKeyNote" }}</p>
+            </div>
+            <h5 class="my-3">{{ LanguageForID "ExistingKeys" }}</h5>
+            {{ $az := `<svg width="1.5em" height="1.5em" viewBox="0 0 16 16" class="bi bi-sort-alpha-down-alt" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" d="M4 2a.5.5 0 0 1 .5.5v11a.5.5 0 0 1-1 0v-11A.5.5 0 0 1 4 2z"/>
+                <path fill-rule="evenodd" d="M6.354 11.146a.5.5 0 0 1 0 .708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 0 1 .708-.708L4 12.793l1.646-1.647a.5.5 0 0 1 .708 0z"/>
+                <path d="M9.027 7h3.934v-.867h-2.645v-.055l2.567-3.719v-.691H9.098v.867h2.507v.055L9.027 6.309V7zm.637 7l.418-1.371h1.781L12.281 14h1.121l-1.78-5.332h-1.235L8.597 14h1.067zM11 9.687l.652 2.157h-1.351l.652-2.156H11z"/>
+            </svg>` }}
+            {{ $za := `<svg width="1.5em" height="1.5em" viewBox="0 0 16 16" class="bi bi-sort-alpha-down" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" d="M4 2a.5.5 0 0 1 .5.5v11a.5.5 0 0 1-1 0v-11A.5.5 0 0 1 4 2z"/>
+                <path fill-rule="evenodd" d="M6.354 11.146a.5.5 0 0 1 0 .708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 0 1 .708-.708L4 12.793l1.646-1.647a.5.5 0 0 1 .708 0z"/>
+                <path d="M9.664 7l.418-1.371h1.781L12.281 7h1.121l-1.78-5.332h-1.235L8.597 7h1.067zM11 2.687l.652 2.157h-1.351l.652-2.157H11zM9.027 14h3.934v-.867h-2.645v-.055l2.567-3.719v-.691H9.098v.867h2.507v.055l-2.578 3.719V14z"/>
+            </svg>` }}
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col"><a href="/keys?o=name&ot={{ .Records.OrderType }}">
+                      {{ LanguageForID "Key" }}
+                      {{ if eq .Records.Order "name" }}
+                          {{ if eq .Records.OrderType "z" }}{{ $za }}{{ else }}{{ $az }}{{ end }}
+                      {{ end }}
+                  </a></th>
+                  <th scope="col"><a href="/keys?o=date&ot={{ .Records.OrderType }}">
+                      {{ LanguageForID "LastChange" }}
+                      {{ if eq .Records.Order "date" }}
+                          {{ if eq .Records.OrderType "z" }}{{ $za }}{{ else }}{{ $az }}{{ end }}
+                      {{ end }}
+                  </a></th>
+                  <th scope="col"><a href="/keys?o=size&ot={{ .Records.OrderType }}">
+                      {{ LanguageForID "Size" }}
+                      {{ if eq .Records.Order "size" }}
+                          {{ if eq .Records.OrderType "z" }}{{ $za }}{{ else }}{{ $az }}{{ end }}
+                      {{ end }}
+                  </a></th>
+                  <th scope="col">{{ LanguageForID "Options" }}</th>
+                </tr>
+              </thead>
+              <tbody>
+                  {{ $KeyInUse := .Records.KeyInUse }}
+                  {{ range $i, $e := .Records.Keys }}
+                  <tr>
+                      <td>{{ Add $i 1 }}</td>
+                      <td>
+                        {{ $e.File.Name }}
+                        {{ if eq $KeyInUse $e.File.Name }}<span class="badge badge-info">{{ LanguageForID "InUse" }}</span>{{ end }}
+                      </td>
+                      <td>{{ $e.Info.ModTime.Format "02/01/2006 15:04:05" }}</td>
+                      <td>{{ FileSize $e.Info.Size }}</td>
+                      <td><a href="/keys?op=download&id={{ $e.File.Name }}">{{ LanguageForID "Download" }}</a></td>                      
+                  </tr>
+                  {{ end }}
+              </tbody>
+          </table>
+
+          </form>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Optional JavaScript -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="/js/jquery.min.js"></script>
+  <script src="/js/popper.min.js"></script>
+  <script src="/js/bootstrap.min.js"></script>
+
+  <script>
+    // define as funções para processamento da pagina
+    $(document).ready(function () {
+      // habilita o uso dos tooltips
+      $('[data-toggle="tooltip"]').tooltip();
+      // carrega o template de exemplo para o campo
+      $("#reset").click(function () {
+        $("#algorithm").val("rsa-2048");
+        $("#password").val("");
+        $("#useAsDefault").prop("checked", false);
+        $("#algorithm").focus();
+      });
+      // desabilita o botão de enviar após o click
+      $('button').click(function (event) {
+        if ($(this).hasClass("disabled")) {
+            event.preventDefault();
+        }
+        $(this).addClass("disabled");
+      });
+    });
+  </script>
+</body>
+
+</html>
+{{ end }}

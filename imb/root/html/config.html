@@ -1,0 +1,362 @@
+{{ define "Config" }}
+<!DOCTYPE HTML>
+<html lang="pt-BR">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <title>{{ .Title }}</title>
+</head>
+
+<body>
+
+  {{ template "NavBarSearch" . }}
+
+  <div class="container-fluid">
+    <div class="row">
+
+      {{ template "SideBar" . }}
+
+      <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+        {{ template "MessageArea" . }}
+        <div class="my-3 p-3 bg-white rounded shadow-sm">
+          <form action="/config" method="post">
+            <div class="d-flex justify-content-between align-items-center w-100 border-bottom border-gray pb-2 mb-0">
+              <h5>{{ LanguageForID "Settings" }}</h5>
+              <button class="btn btn-outline-secondary btn-sm" type="submit" id="save" name="op" value="save"
+                data-toggle="tooltip" data-placement="bottom" title="{{ LanguageForID "Save" }}">
+                <svg class="bi bi-check2" width="1.5em" height="1.5em" viewBox="0 0 16 16" fill="currentColor"
+                  xmlns="http://www.w3.org/2000/svg">
+                  <path fill-rule="evenodd"
+                    d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z" />
+                </svg>
+              </button>
+            </div>
+
+            <div class="form-group">
+              <div class="mb-2">
+                <div class="bg-dark text-white rounded p-1" data-toggle="collapse" href="#general" role="button"
+                  aria-expanded="false" aria-controls="general">{{ LanguageForID "GeneralSettings" }}</div>
+                <div class="bg-light rounded p-3 collapse show" id="general">
+                  <div class="row">
+                    <div class="col">
+                      <label for="language">{{ LanguageForID "Language" }}</label>
+                      <small id="languageHelp" class="form-text text-muted">{{ LanguageForID "LanguageDescription" }}</small>
+                    </div>
+                    <div class="col-3">
+                      <select class="form-control" class="form-control" id="language" name="language"
+                        aria-describedby="languageHelp" placeholder="Português, English">
+                        {{ $language := .Config.Language }}
+                        {{ range $i, $e := .Languages }}
+                          <option value="{{ $i }}" {{ if eq $i $language }}selected{{ end }}>{{ $e }}</option>
+                        {{ end }}
+                      </select>
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row">
+                    <div class="col">
+                      <label for="httpConfigAddress">{{ LanguageForID "HTTPAddressSetting" }}</label>
+                      <small id="httpConfigAddressHelp" class="form-text text-muted">{{ LanguageForID "HTTPAddressSettingDescription" }}</small>
+                    </div>
+                    <div class="col-3">
+                      <input type="text" class="form-control" id="httpConfigAddress" name="httpConfigAddress"
+                        aria-describedby="httpConfigAddressHelp" placeholder="{{ LanguageForID "IPOrDNS" }}"
+                        value="{{ .Config.HTTPConfigAddress }}">
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row">
+                    <div class="col">
+                      <label for="httpConfigPort">{{ LanguageForID "HTTPPortSetting" }}</label>
+                      <small id="httpConfigPortHelp" class="form-text text-muted">{{ LanguageForID "HTTPPortSettingDescription" }}</small>
+                    </div>
+                    <div class="col-3">
+                      <input type="number" class="form-control" id="httpConfigPort" name="httpConfigPort"
+                        aria-describedby="httpConfigPortHelp" placeholder="{{ LanguageForID "Port" }}" value="{{ .Config.HTTPConfigPort }}">
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row">
+                    <div class="col">
+                      <label for="transferSequence">{{ LanguageForID "TransferSequence" }}</label>
+                      <small id="transferSequenceHelp" class="form-text text-muted">{{ LanguageForID "TransferSequenceDescription" }}</small>
+                    </div>
+                    <div class="col-3">
+                      <input type="number" class="form-control" id="transferSequence" name="transferSequence"
+                        aria-describedby="transferSequenceHelp" placeholder="0, 1, 2"
+                        value="{{ .Config.TransferSequence }}">
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row">
+                    <div class="col">
+                      <label for="managers">{{ LanguageForID "TransferManager" }}</label>
+                      <small id="managersHelp" class="form-text text-muted">{{ LanguageForID "TransferManagerDescription" }}</small>
+                    </div>
+                    <div class="col-3">
+                      <input type="number" class="form-control" id="managers" name="managers"
+                        aria-describedby="managersHelp" placeholder="1, 10, 20" value="{{ .Config.Managers }}">
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row">
+                    <div class="col">
+                      <label for="transferAgents">{{ LanguageForID "TransferAgents" }}</label>
+                      <small id="transferAgentssHelp" class="form-text text-muted">{{ LanguageForID "TransferAgentsDescription" }}</small>
+                    </div>
+                    <div class="col-3">
+                      <input type="number" class="form-control" id="transferAgents" name="transferAgents"
+                        aria-describedby="transferAgentsHelp" placeholder="10, 20, 30"
+                        value="{{ .Config.TransferAgents }}">
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row">
+                    <div class="col">
+                      <label for="transferRecords">{{ LanguageForID "TransferRecords" }}</label>
+                      <small id="transferRecordsHelp" class="form-text text-muted">{{ LanguageForID "TransferRecordsDescription" }}</small>
+                    </div>
+                    <div class="col-3">
+                      <input type="number" class="form-control" id="transferRecords" name="transferRecords"
+                        aria-describedby="transferRecordsHelp" placeholder="100, 1000, 5000"
+                        value="{{ .Config.TransferRecords }}">
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row">
+                    <div class="col">
+                      <label for="deepFolderList">{{ LanguageForID "DeepFolderList" }}</label>
+                      <small id="deepFolderListHelp" class="form-text text-muted">{{ LanguageForID "DeepFolderListDescription" }}</small>
+                    </div>
+                    <div class="col-3">
+                      <input type="text" class="form-control" id="deepFolderList" name="deepFolderList"
+                        aria-describedby="deepFolderListHelp" placeholder="0, 1, 2"
+                        value="{{ .Config.DeepFolderList }}">
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row">
+                    <div class="col">
+                      <label for="temporaryFolder">{{ LanguageForID "TemporaryFolder" }}</label>
+                      <small id="temporaryFolderHelp" class="form-text text-muted">{{ LanguageForID "TemporaryFolderDescription" }}</small>
+                    </div>
+                    <div class="col-3">
+                      <input type="text" class="form-control" id="temporaryFolder" name="temporaryFolder"
+                        aria-describedby="temporaryFolderHelp" placeholder="{{ LanguageForID "Folder" }}"
+                        value="{{ Escape .Config.TemporaryFolder }}">
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row">
+                    <div class="col">
+                      <label for="disableAutoupdate">{{ LanguageForID "DisableAutoUpdate" }}</label>
+                      <small id="disableAutoupdateHelp" class="form-text text-muted">{{ LanguageForID "DisableAutoUpdateDescription" }}</small>
+                    </div>
+                    <div class="col-3">
+                      <div class="custom-control custom-switch">
+                        <input class="custom-control-input" type="checkbox" id="disableAutoupdate"
+                          name="disableAutoupdate" value="yes" {{ if .Config.DisableAutoupdate }}checked{{ end }}>
+                        <label class="custom-control-label" for="disableAutoupdate">{{ LanguageForID "Disable" }}</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="mb-2">
+                <div class="bg-dark text-white rounded p-1" data-toggle="collapse" href="#keys" role="button"
+                  aria-expanded="false" aria-controls="keys">{{ LanguageForID "SSHKeys" }}</div>
+                <div class="bg-light rounded p-3 collapse" id="keys">
+                  <div class="row">
+                    <div class="col">
+                      <label for="keysFolder">{{ LanguageForID "KeysFolder" }}</label>
+                      <small id="keysFolderHelp" class="form-text text-muted">{{ LanguageForID "KeysFolderDescription" }}</small>
+                    </div>
+                    <div class="col-3">
+                      <input type="text" class="form-control" id="keysFolder" name="keysFolder"
+                        aria-describedby="keysFolderHelp" placeholder="{{ LanguageForID "Folder" }}" value="{{ Escape .Config.KeysFolder }}">
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row">
+                    <div class="col">
+                      <label for="privateKey">{{ LanguageForID "PrivateKey" }}</label>
+                      <small id="privateKeyHelp" class="form-text text-muted">{{ LanguageForID "PrivateKeyDescription1" }} <a href="/keys">{{ LanguageForID "SSHKeys" }}</a>. {{ LanguageForID "PrivateKeyDescription2" }} <strong>puttygen</strong>.</small>
+                    </div>
+                    <div class="col-3">
+                      <input type="text" class="form-control" id="privateKey" name="privateKey"
+                        aria-describedby="privateKeyHelp" placeholder="{{ LanguageForID "PathAndFile" }}" value="{{ Escape .Config.PrivateKey }}">
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row">
+                    <div class="col">
+                      <label for="privateKeyPassword">{{ LanguageForID "PrivateKeyPassword" }}</label>
+                      <small id="privateKeyPasswordHelp" class="form-text text-muted">{{ LanguageForID "PrivateKeyPasswordDescription" }}</small>
+                    </div>
+                    <div class="col-3">
+                      <input type="password" class="form-control" id="privateKeyPassword" name="privateKeyPassword"
+                        aria-describedby="privateKeyPasswordHelp" placeholder="{{ LanguageForID "Password" }}"
+                        value="{{ .Config.PrivateKeyPassword }}">
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row">
+                    <div class="col">
+                      <label for="authorizedKeys">{{ LanguageForID "AuthorizedKeys" }}</label>
+                      <small id="authorizedKeysHelp" class="form-text text-muted">{{ LanguageForID "AuthorizedKeysDescription" }}</small>
+                    </div>
+                    <div class="col-3">
+                      <input type="text" class="form-control" id="authorizedKeys" name="authorizedKeys"
+                        aria-describedby="authorizedKeysTimeHelp" placeholder="{{ LanguageForID "PathAndFile" }}"
+                        value="{{ Escape .Config.AuthorizedKeys }}">
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+              <div class="mb-2">
+                <div class="bg-dark text-white rounded p-1" data-toggle="collapse" href="#proxy" role="button"
+                  aria-expanded="false" aria-controls="proxy">{{ LanguageForID "Proxy" }}</div>
+                <div class="bg-light rounded p-3 collapse" id="proxy">
+                  <div class="row">
+                    <div class="col">
+                      <label for="proxyAddress">{{ LanguageForID "ProxyServerAddress" }}</label>
+                      <small id="proxyAddressHelp" class="form-text text-muted">{{ LanguageForID "ProxyServerAddressDescription" }}</small>
+                    </div>
+                    <div class="col-3">
+                      <input type="text" class="form-control" id="proxyAddress" name="proxyAddress"
+                        aria-describedby="proxyAddressHelp" placeholder="{{ LanguageForID "IPOrDNS" }}"
+                        value="{{ Escape .Config.ProxyAddress }}">
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row">
+                    <div class="col">
+                      <label for="proxyPort">{{ LanguageForID "ProxyServerPort" }}</label>
+                      <small id="proxyPortHelp" class="form-text text-muted">{{ LanguageForID "ProxyServerPortDescription" }}</small>
+                    </div>
+                    <div class="col-3">
+                      <input type="number" class="form-control" id="proxyPort" name="proxyPort"
+                        aria-describedby="proxyPortHelp" placeholder="{{ LanguageForID "Port" }}" value="{{ .Config.ProxyPort }}">
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row">
+                    <div class="col">
+                      <label for="proxyTLSEnabled">{{ LanguageForID "ProxyTLSEnabled" }}</label>
+                      <small id="proxyTLSEnabledHelp" class="form-text text-muted">{{ LanguageForID "ProxyTLSEnabledDescription" }}</small>
+                    </div>
+                    <div class="col-3">
+                      <div class="custom-control custom-switch">
+                        <input class="custom-control-input" type="checkbox" id="proxyTLSEnabled"
+                          name="proxyTLSEnabled" value="yes" {{ if .Config.ProxyTLSEnabled }}checked{{ end }}>
+                        <label class="custom-control-label" for="proxyTLSEnabled">{{ LanguageForID "Enabled" }}</label>
+                      </div>
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row">
+                    <div class="col">
+                      <label for="proxyType">{{ LanguageForID "ProxyType" }}</label>
+                      <small id="proxyTypeHelp" class="form-text text-muted">{{ LanguageForID "ProxyTypeDescription1" }}</small>
+                      <small id="proxyTypeHelp" class="form-text text-muted">
+                        <ul>
+                          <li><strong>{{ LanguageForID "ProxyTypeDescription2" }}</strong> - {{ LanguageForID "ProxyTypeDescription3" }}</li>
+                        </ul>
+                      </small>
+                    </div>
+                    <div class="col-3">
+                      <select class="form-control" id="proxyType" name="proxyType" aria-describedby="proxyTypeHelp"
+                        value="{{ .Config.ProxyType }}">
+                        <option value="http">{{ LanguageForID "ProxyTypeDescription2" }}</option>
+                      </select>
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row">
+                    <div class="col">
+                      <label for="proxyUser">{{ LanguageForID "ProxyUser" }}</label>
+                      <small id="proxyUserHelp" class="form-text text-muted">{{ LanguageForID "ProxyUserDescription" }}</small>
+                    </div>
+                    <div class="col-3">
+                      <input type="text" class="form-control" id="proxyUser" name="proxyUser"
+                        aria-describedby="proxyUserHelp" placeholder="{{ LanguageForID "User" }}" value="{{ .Config.ProxyUser }}">
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row">
+                    <div class="col">
+                      <label for="proxyPassword">{{ LanguageForID "ProxyPassword" }}</label>
+                      <small id="proxyPasswordHelp" class="form-text text-muted">{{ LanguageForID "ProxyPasswordDescription" }}</small>
+                    </div>
+                    <div class="col-3">
+                      <input type="password" class="form-control" id="proxyPassword" name="proxyPassword"
+                        aria-describedby="proxyPasswordHelp" placeholder="{{ LanguageForID "Password" }}" value="{{ .Config.ProxyPassword }}">
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <div class="bg-dark text-white rounded p-1" data-toggle="collapse" href="#logs" role="button"
+                  aria-expanded="false" aria-controls="logs">{{ LanguageForID "Logs" }}</div>
+                <div class="bg-light rounded p-3 collapse" id="logs">
+                  <div class="row">
+                    <div class="col">
+                      <label for="logFilesPath">{{ LanguageForID "LogFilesPath" }}</label>
+                      <small id="logFilesPathHelp" class="form-text text-muted">{{ LanguageForID "LogFilesPathDescription" }}</small>
+                    </div>
+                    <div class="col-3">
+                      <input type="text" class="form-control" id="logFilesPath" name="logFilesPath"
+                        aria-describedby="logFilesPathHelp" placeholder="{{ LanguageForID "Path" }}"
+                        value="{{ Escape .Config.LogsFolder }}">
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row">
+                    <div class="col">
+                      <label for="removeLogsAfter">{{ LanguageForID "RemoveLogsAfter" }}</label>
+                      <small id="removeLogsAfterHelp" class="form-text text-muted">{{ LanguageForID "RemoveLogsAfterDescription" }}</small>
+                    </div>
+                    <div class="col-3">
+                      <input type="number" class="form-control" id="removeLogsAfter" name="removeLogsAfter"
+                        aria-describedby="removeLogsAfterHelp" placeholder="{{ LanguageForID "Days" }}" value="{{ .Config.RemoveLogsAfter }}">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </main>
+    </div>
+  </div>
+
+
+  <!-- Optional JavaScript -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="/js/jquery.min.js"></script>
+  <script src="/js/popper.min.js"></script>
+  <script src="/js/bootstrap.min.js"></script>
+
+  <script>
+    // define as funções para processamento da pagina
+    $(document).ready(function () {
+      // habilita o uso dos tooltips
+      $('[data-toggle="tooltip"]').tooltip();
+    });
+  </script>
+
+</body>
+
+</html>
+{{ end }}

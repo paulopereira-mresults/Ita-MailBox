@@ -1,0 +1,8 @@
+11/06/2025 19:49:50	Error	[3] [ITAUSA] unable to open private key file. Error: open : no such file or directory
+11/06/2025 19:49:51	Error	[3] [ITAUSA] unable to open private key file. Error: open : no such file or directory
+11/06/2025 19:49:52	Error	[3] [ITAUSA] unable to open private key file. Error: open : no such file or directory
+11/06/2025 19:49:53	Error	[3] [ITAUSA] unable to open private key file. Error: open : no such file or directory
+11/06/2025 19:49:54	Error	[3] [ITAUSA] unable to open private key file. Error: open : no such file or directory
+11/06/2025 19:49:56	Error	[3] [ITAUSA] unable to open private key file. Error: open : no such file or directory
+11/06/2025 19:50:00	Error	[3] [ITAUSA] unable to open private key file. Error: open : no such file or directory
+11/06/2025 19:50:07	Error	[3] [ITAUSA] unable to open private key file. Error: open : no such file or directory

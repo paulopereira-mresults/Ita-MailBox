@@ -1,0 +1,108 @@
+{{ define "Logs" }}
+<!DOCTYPE HTML>
+<html lang="pt-BR">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+
+    <title>{{ .Title }}</title>
+</head>
+
+<body>
+
+    {{ template "NavBarSearch" . }}
+
+    <div class="container-fluid">
+        <div class="row">
+
+            {{ template "SideBar" . }}
+
+            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+                {{ template "MessageArea" . }}
+                <div class="my-3 p-3 bg-white rounded shadow-sm">
+                    <div class="d-flex justify-content-between align-items-center w-100 border-bottom border-gray pb-2 mb-0">
+                        <h5>{{ LanguageForID "Logs" }}</h5>
+                        <a class="btn btn-outline-secondary btn-sm" href="/logs?op=clear&o=name&ot={{ .Records.OrderType }}" data-toggle="tooltip" data-placement="bottom" title="{{ LanguageForID "ClearLogs" }}">
+                            <svg class="bi bi-trash" width="1.5em" height="1.5em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                                <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                            </svg>
+                        </a>
+                    </div>
+                    {{ $az := `<svg width="1.5em" height="1.5em" viewBox="0 0 16 16" class="bi bi-sort-alpha-down-alt" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" d="M4 2a.5.5 0 0 1 .5.5v11a.5.5 0 0 1-1 0v-11A.5.5 0 0 1 4 2z"/>
+                        <path fill-rule="evenodd" d="M6.354 11.146a.5.5 0 0 1 0 .708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 0 1 .708-.708L4 12.793l1.646-1.647a.5.5 0 0 1 .708 0z"/>
+                        <path d="M9.027 7h3.934v-.867h-2.645v-.055l2.567-3.719v-.691H9.098v.867h2.507v.055L9.027 6.309V7zm.637 7l.418-1.371h1.781L12.281 14h1.121l-1.78-5.332h-1.235L8.597 14h1.067zM11 9.687l.652 2.157h-1.351l.652-2.156H11z"/>
+                    </svg>` }}
+                    {{ $za := `<svg width="1.5em" height="1.5em" viewBox="0 0 16 16" class="bi bi-sort-alpha-down" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" d="M4 2a.5.5 0 0 1 .5.5v11a.5.5 0 0 1-1 0v-11A.5.5 0 0 1 4 2z"/>
+                        <path fill-rule="evenodd" d="M6.354 11.146a.5.5 0 0 1 0 .708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 0 1 .708-.708L4 12.793l1.646-1.647a.5.5 0 0 1 .708 0z"/>
+                        <path d="M9.664 7l.418-1.371h1.781L12.281 7h1.121l-1.78-5.332h-1.235L8.597 7h1.067zM11 2.687l.652 2.157h-1.351l.652-2.157H11zM9.027 14h3.934v-.867h-2.645v-.055l2.567-3.719v-.691H9.098v.867h2.507v.055l-2.578 3.719V14z"/>
+                    </svg>` }}
+                    <table class="table table-hover">
+                        <thead>
+                          <tr>
+                            <th scope="col">#</th>
+                            <th scope="col"><a href="/logs?o=name&ot={{ .Records.OrderType }}">
+                                {{ LanguageForID "File" }}
+                                {{ if eq .Records.Order "name" }}
+                                    {{ if eq .Records.OrderType "z" }}{{ $za }}{{ else }}{{ $az }}{{ end }}
+                                {{ end }}
+                            </a></th>
+                            <th scope="col"><a href="/logs?o=date&ot={{ .Records.OrderType }}">
+                                {{ LanguageForID "LastChange" }}
+                                {{ if eq .Records.Order "date" }}
+                                    {{ if eq .Records.OrderType "z" }}{{ $za }}{{ else }}{{ $az }}{{ end }}
+                                {{ end }}
+                            </a></th>
+                            <th scope="col"><a href="/logs?o=size&ot={{ .Records.OrderType }}">
+                                {{ LanguageForID "Size" }}
+                                {{ if eq .Records.Order "size" }}
+                                    {{ if eq .Records.OrderType "z" }}{{ $za }}{{ else }}{{ $az }}{{ end }}
+                                {{ end }}
+                            </a></th>
+                            <th scope="col">{{ LanguageForID "Options" }}</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                            {{ range $i, $e := .Records.Logs }}
+                            <tr>
+                                <td>{{ Add $i 1 }}</td>
+                                <td>{{ $e.File.Name }}</td>
+                                <td>{{ $e.Info.ModTime.Format "02/01/2006 15:04:05" }}</td>
+                                <td>{{ FileSize $e.Info.Size }}</td>
+                                <td><a href="/logs?op=show&id={{ $e.File.Name }}">{{ LanguageForID "Open" }}</a></td>
+                            </tr>
+                            {{ end }}
+                        </tbody>
+                    </table>
+                </div>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/popper.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+
+    <script>
+        // define as funções para processamento da pagina
+        $(document).ready(function () {
+            // habilita o uso dos tooltips
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+    </script>
+
+</body>
+
+</html>
+{{ end }}

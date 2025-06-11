@@ -1,0 +1,45 @@
+{
+  "version": "imb-1.6.1-32bits-linux",
+  "transfer_sequence": 2,
+  "authorized_keys": "$Path/sample/authorizedkeys.txt",
+  "logs_folder": "$Path/Logs",
+  "temporary_folder": "$Path/Temp",
+  "keys_folder": "$Path/Keys",
+  "remove_logs_after": 30,
+  "managers": 10,
+  "transfer_agents": 100,
+  "transfer_records": 1000,
+  "deep_folder_list": 1,
+  "http_config_address": "0.0.0.0",
+  "http_config_port": 9010,
+  "last_update_check": "11/06/2025 18:43:12",
+  "language": "pt-BR",
+  "mailboxes": {
+    "ITAUSA": {
+      "address": "lb.sfg.prod.cloud.itau.com.br",
+      "port": 22,
+      "user": "user",
+      "publickey_authentication": true,
+      "connection_interval": 10,
+      "sessions": 4,
+      "protocol": "SFTP",
+      "last_connection": "11/06/2025 18:43:08",
+      "send_folders": [
+        {
+          "alias": "Enviar",
+          "local": "$Path/ITAUSA/Enviar",
+          "remote": "/SEND/files",
+          "backup": "$Path/ITAUSA/Backup",
+          "remove_backup_files_after": 30
+        }
+      ],
+      "receive_folders": [
+        {
+          "alias": "Receber",
+          "local": "$Path/ITAUSA/Receber",
+          "remote": "/RECEIVED/files"
+        }
+      ]
+    }
+  }
+}

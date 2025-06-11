@@ -1,0 +1,9 @@
+# este é um comentário, não importa como o job estiver, o que importa é que tenha
+# pelo menos um espaço ou tab entre os campos, linhas com parametros ausentes 
+# serão ignoradas
+# se houver nomes de arquivos com espaços você pode separa-los com aspas duplas ou simples
+     Itau            put            "c:\temp\arquivo1.txt" "/Inbox/arquivo1.txt"             "backup"   	 
+      Itau   put    'c:\temp\arquivo 2 com espaços no nome.txt'   "/Inbox/arquivo2.txt"   "backup"
+
+# linhas vazias também serão ignoradas, porém a linha abaixo será processada
+Itau put 'c:\temp\arquivo 3.txt' "/Inbox/arquivo3.txt" "backup"

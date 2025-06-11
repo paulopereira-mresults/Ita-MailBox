@@ -1,0 +1,84 @@
+{{ define "FirstExecution" }}
+<!DOCTYPE HTML>
+<html lang="pt-BR">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+
+    <title>{{ .Title }}</title>
+</head>
+
+<body class="vh-100 vw-100">
+
+    <div class="d-flex justify-content-center align-items-center vh-100 vw-100">
+
+        {{ template "MessageArea" . }}
+
+        <div class="rounded login-form">
+            <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
+                <a class="navbar-brand col-md-3 col-lg-2 mr-0 px-3" href="/">
+                    <img src="/img/logo.svg" width="48px" height="48px" class="d-inline-block align-middle" alt=""
+                        loading="lazy">
+                    <span class="mx-2 align-middle">Mailbox</span>
+                </a>
+            </nav>
+            <div class="bg-light rounded p-3 mb-3 text-align text-center">
+                {{ $language := .Config.Language }}
+                <div class="d-flex justify-content-center">
+                {{ range $i, $e := .Languages }}
+                  <a class="text-reset mx-2 mb-2 {{ if eq $i $language }}border-bottom border-info{{ end }}" href="/?lang={{ $i }}">{{ $e }}</a>
+                {{ end }}
+                </div>
+                <div class="alert alert-warning" role="alert">
+                    <h5 class="alert-heading">{{ LanguageForID "Warning" }}!</h5>
+                    <p>{{ LanguageForID "FirstExecutionNote" }}</p>
+                </div>
+                <form action="/firstexecution" method="POST">
+                    <div class="form-group">
+                        <label for="user">{{ LanguageForID "UserAccess" }}</label>
+                        <input type="text" class="form-control" id="user" name="user" aria-describedby="userHelp"
+                            placeholder="{{ LanguageForID "User" }}">
+                        <small id="userHelp" class="form-text text-muted">{{ LanguageForID "UserAccessHelpWithCase" }}</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">{{ LanguageForID "PasswordAccess" }}</label>
+                        <input type="password" class="form-control" id="password" name="password"
+                            aria-describedby="passwordHelp" placeholder="{{ LanguageForID "Password" }}">
+                        <small id="passwordHelp" class="form-text text-muted">{{ LanguageForID "PasswordReceivedToAccessMailbox" }}</small>
+                    </div>
+                    <button type="submit" class="btn btn-outline-success">{{ LanguageForID "Configure" }}</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/popper.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+
+    <script>
+        // define as funções para processamento da pagina
+        $(document).ready(function () {
+            // habilita o uso dos tooltips
+            $('[data-toggle="tooltip"]').tooltip();
+            // desabilita o botão de enviar após o click
+            $('button').click(function (event) {
+                if ($(this).hasClass("disabled")) {
+                    event.preventDefault();
+                }
+                $(this).addClass("disabled");
+            });
+        });
+    </script>
+</body>
+
+</html>
+{{ end }}

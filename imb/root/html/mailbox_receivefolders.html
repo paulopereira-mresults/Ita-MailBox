@@ -1,0 +1,180 @@
+{{ define "MailboxConfigReceiveFolders" }}
+<!DOCTYPE HTML>
+<html lang="pt-BR">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewremote" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <title>{{ .Title }}</title>
+</head>
+
+<body>
+
+  {{ template "NavBarSearch" . }}
+
+  <div class="container-fluid">
+    <div class="row">
+
+      {{ template "SideBar" . }}
+
+      <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+        {{ template "MessageArea" . }}
+        <div class="my-3 p-3 bg-white rounded shadow-sm">
+          <form action="/mailboxconfigreceivefolder" method="post">
+            <div class="d-flex justify-content-between align-items-center w-100 border-bottom border-gray pb-2 mb-0">
+              <h5>{{LanguageForID "ReceptionFolder"}}</h5>
+              <div>
+                <button class="btn btn-outline-secondary btn-sm" type="submit" id="save" name="op" value="save"
+                  data-toggle="tooltip" data-placement="bottom" title="{{LanguageForID "Save"}}">
+                  <svg class="bi bi-check2" width="1.5em" height="1.5em" viewBox="0 0 16 16" fill="currentColor"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd"
+                      d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z" />
+                  </svg>
+                </button>
+                <button class="btn btn-outline-secondary btn-sm" type="submit" id="delete" name="op" value="delete"
+                  data-toggle="tooltip" data-placement="bottom" title="{{LanguageForID "Delete"}}">
+                  <svg class="bi bi-trash" width="1.5em" height="1.5em" viewBox="0 0 16 16" fill="currentColor"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path
+                      d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
+                    <path fill-rule="evenodd"
+                      d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+            <input type="hidden" id="mid" name="mid" value="{{ .Record.FilterMailbox }}">
+            <input type="hidden" id="fid" name="fid" value="{{ .Record.FilterFolder }}">
+            <input type="hidden" id="rfid" name="rfid" value="{{ .Record.FilterRemoteFolder }}">
+
+            <div class="bg-light rounded p-3">
+              <div class="row">
+                <div class="form-group col">
+                  <label for="local">{{LanguageForID "DisplayName"}}</label>
+                  <input type="text" class="form-control" id="alias" name="alias" aria-describedby="aliasHelp"
+                    placeholder="{{LanguageForID "Name"}}" value="{{ Escape .Record.Folder.ParseAlias }}">
+                  <small id="localHelp" class="form-text text-muted">{{LanguageForID "DisplayNameDescription"}}</small>
+                </div>
+              </div>
+              <div class="row">
+                <div class="form-group col">
+                  <label for="local">{{LanguageForID "LocalFolder"}}</small></label>
+                  <input type="text" class="form-control" id="local" name="local" aria-describedby="localHelp"
+                    placeholder="{{LanguageForID "FolderPath"}}" value="{{ Escape .Record.Folder.Local }}">
+                  <small id="localHelp" class="form-text text-muted">{{LanguageForID "LocalFolderDescriptionForReception"}}</small>
+                </div>
+                <div class="form-group col">
+                  <label for="remote">{{LanguageForID "RemoteFolder"}}</label>
+                  <input type="text" class="form-control" id="remote" name="remote" aria-describedby="remoteHelp"
+                    placeholder="{{LanguageForID "FolderPath"}}" value="{{ Escape .Record.Folder.Remote }}">
+                  <small id="remoteHelp" class="form-text text-muted">{{LanguageForID "RemoteFolderDescriptionForReceive"}}</small>
+                </div>
+              </div>
+              <div class="row">
+                <div class="form-group col">
+                  <label for="endline">{{LanguageForID "EndLineConversion"}}</label>
+                  <select class="form-control" id="endline" name="endline" aria-describedby="endlineHelp"
+                    placeholder="{{LanguageForID "EndLine"}}">
+                    <option value="binary" {{if .Record.Folder.IsEndLineBinary }}selected{{end}}>{{LanguageForID "EndLineBinary"}}</option>
+                    <option value="windows" {{if .Record.Folder.IsEndLineWindows }}selected{{end}}>{{LanguageForID "EndLineWindows"}}</option>
+                    <option value="linux" {{if .Record.Folder.IsEndLineLinux }}selected{{end}}>{{LanguageForID "EndLineLinux"}}</option>
+                  </select>
+                  <small id="endlineHelp" class="form-text text-muted"><strong>{{LanguageForID "Warning"}} : </strong>{{LanguageForID "EndLineConversionDescription"}}</small>
+                </div>
+              </div>
+              <div class="row">
+                <div class="form-group col">
+                  <label for="runAsync">{{LanguageForID "RunAsynchronousCommandForReceive"}}</label>
+                  <input type="text" class="form-control" id="runAsync" name="runAsync" aria-describedby="runAsyncHelp"
+                    placeholder="{{LanguageForID "Command"}}" value="{{ Escape .Record.Folder.RunAsync }}">
+                  <small id="runAsyncHelp" class="form-text text-muted">{{LanguageForID "RunAsynchronousCommandForReceiveDescription"}}</small>
+                </div>
+              </div>
+              <div class="row">
+                <div class="form-group col">
+                  <label for="runSync">{{LanguageForID "RunSynchronousCommandForReceive"}}</label>
+                  <input type="text" class="form-control" id="runSync" name="runSync" aria-describedby="runSyncHelp"
+                    placeholder="{{LanguageForID "Command"}}" value="{{ Escape .Record.Folder.RunSync }}">
+                  <small id="runSyncHelp" class="form-text text-muted">{{LanguageForID "RunSynchronousCommandForReceiveDescription"}}</small>
+                </div>
+              </div>
+              <div>
+                <small>
+                  <p>{{LanguageForID "RunCommandDescription"}}</p>
+                  <ul>
+                    <li>$Path = {{LanguageForID "programpath"}} ({{ ApplicationPath }})</li>
+                    <li>$Local = {{LanguageForID "localfile"}}</li>
+                    <li>$Remote = {{LanguageForID "remotefile"}}</li>
+                    <li>$Process = {{LanguageForID "processnumber"}}</li>
+                    <li>$TransferID = {{LanguageForID "filenumber"}}</li>
+                    <li>$Mode = {{LanguageForID "transfermode"}}</li>
+                    <li>$Mailbox = {{LanguageForID "mailboxname"}}</li>
+                    <li>$User = {{LanguageForID "connectionuser"}}</li>
+                    <li>$Started = {{LanguageForID "startdatetime"}}</li>
+                    <li>$Ended = {{LanguageForID "enddatetime"}}</li>
+                    <li>$ChangedTime = {{LanguageForID "filechangetime"}}</li>
+                    <li>$Status = {{LanguageForID "transferstatus"}}</li>
+                    <li>$Size = {{LanguageForID "totaltransferbytes"}}</li>
+                  </ul>
+                  <p><strong>{{LanguageForID "Sample"}} : </strong>"C:\mailbox\exec.bat" "$Local" "$Remote" $Process "$Mode"
+                    "$Mailbox" $User "$Started" "$Ended" $Status $Size</p>
+                </small>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col">
+                  <div class="custom-control custom-switch">
+                    <input class="custom-control-input" type="checkbox" id="disabled" name="disabled" value="yes"
+                      {{ if .Record.Folder.Disabled }}checked{{ end }}>
+                    <label class="custom-control-label" for="disabled">{{LanguageForID "DisableReception"}}</label>
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="custom-control custom-switch">
+                    <input class="custom-control-input" type="checkbox" id="disabledListing" name="disabledListing"
+                      value="yes" {{ if .Record.Folder.DisabledListing }}checked{{ end }}>
+                    <label class="custom-control-label" for="disabledListing">{{LanguageForID "DisableListFolder"}}</label>
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="custom-control custom-switch">
+                    <input class="custom-control-input" type="checkbox" id="removeAfterCopy" name="removeAfterCopy"
+                      value="yes" {{ if .Record.Folder.RemoveAfterCopy }}checked{{ end }}>
+                    <label class="custom-control-label" for="removeAfterCopy">{{LanguageForID "RemoveAfterCopy"}}</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </main>
+    </div>
+
+  </div>
+
+  <!-- Optional JavaScript -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="/js/jquery.min.js"></script>
+  <script src="/js/popper.min.js"></script>
+  <script src="/js/bootstrap.min.js"></script>
+
+  <script>
+    // define as funções para processamento da pagina
+    $(document).ready(function () {
+        // habilita o uso dos tooltips
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+  </script>
+
+</body>
+
+</html>
+{{ end }}

@@ -1,0 +1,13 @@
+services:
+  itau_imb_docker:
+    build: .
+    container_name: itau_imb_docker
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+    volumes:
+      - ./imb:/home/itau/imb/
+    environment:
+      - IMB_PORT=8080
+      - IMB_USER=...
+      - IMB_PASS=...

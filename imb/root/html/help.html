@@ -1,0 +1,170 @@
+{{ define "Help" }}
+<!DOCTYPE HTML>
+<html lang="pt-BR">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+
+    <title>{{ .Title }}</title>
+</head>
+
+<body>
+
+    {{ template "NavBarSearch" . }}
+
+    <div class="container-fluid">
+        <div class="row">
+
+            {{ template "SideBar" . }}
+
+            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+                {{ template "MessageArea" . }}
+                <div class="my-3 p-3 bg-white rounded shadow-sm">
+                    <div
+                        class="d-flex justify-content-between align-items-center w-100 border-bottom border-gray pb-2 mb-0">
+                        <h5>{{ LanguageForID "Help" }}</h5>
+                    </div>
+
+                    <h5 class="my-3"><u>{{ LanguageForID "HelpCommandsForCommandLine" }}</u></h6>
+                    <p>{{ LanguageForID "HelpAutoConfig" }}:</p>
+                    <p class="text-monospace rounded-lg bg-light p-1">imb autoconfig -user {{ Lower (LanguageForID "User") }} -pwd {{ Lower (LanguageForID "Password") }}</p>
+                    <p><strong>{{ LanguageForID "Note" }}: </strong>{{ LanguageForID "HelpAutoConfigNote" }}.</p>
+                    <p>{{ LanguageForID "HelpShowCurrentConfig" }}:</p>
+                    <p class="text-monospace rounded-lg bg-light p-1">imb config</p>
+                    <p>{{ LanguageForID "HelpStartTransfers" }}:</p>
+                    <p class="text-monospace rounded-lg bg-light p-1">imb start</p>
+                    <p>{{ LanguageForID "HelpStartTransfersBatch" }}:</p>
+                    <p class="text-monospace rounded-lg bg-light p-1">imb start -batch job.txt</p>
+                    <p>{{ LanguageForID "HelpStartTransfersBackground" }}:</p>
+                    <p class="text-monospace rounded-lg bg-light p-1">imb start -daemon</p>
+                    <p>{{ LanguageForID "HelpStartConnectivityTest" }}:</p>
+                    <p class="text-monospace rounded-lg bg-light p-1">imb start -test</p>
+                    <p>{{ LanguageForID "HelpTestConnection1" }}:</p>
+                    <p class="text-monospace rounded-lg bg-light p-1">imb testconnection</p>
+                    <p>{{ LanguageForID "HelpTestConnection2" }}:</p>
+                    <p class="text-monospace rounded-lg bg-light p-1">imb testconnection -address {{ Lower (LanguageForID "Address") }} -port {{ Lower (LanguageForID "Port2") }}</p>
+                    <p>{{ LanguageForID "HelpConfigDirectories" }}:</p>
+                    <p class="text-monospace rounded-lg bg-light p-1">imb config -keys $Path{{ PathSeparator }}Keys -logs $Path{{ PathSeparator }}Logs -temp $Path{{ PathSeparator }}Temp</p>
+                    <p>{{ LanguageForID "HelpCreateSSHKey" }}</p>
+                    <p class="text-monospace rounded-lg bg-light p-1">imb createkey -a rsa-2048</p>
+                    <p>{{ LanguageForID "HelpCreateSSHKeyUse" }}:</p>
+                    <p class="text-monospace rounded-lg bg-light p-1">imb createkey -a rsa-2048 -use</p>
+                    <p>{{ LanguageForID "HelpConfigPrivateAndAutorizedKey" }}:</p>
+                    <p class="text-monospace rounded-lg bg-light p-1">imb config -key $Path{{ PathSeparator }}sample{{ PathSeparator }}privatekey_rsa_2048.txt -pwd {{ Lower (LanguageForID "Password") }} -authorized $Path{{ PathSeparator }}sample{{ PathSeparator }}authorizedkeys.txt</p>
+                    <p>{{ LanguageForID "HelpConfigNewMailbox" }}:</p>
+                    <p class="text-monospace rounded-lg bg-light p-1">imb mailbox -name ItauHom -address portalb2b-homolog.itau-unibanco.com.br -user {{ Lower (LanguageForID "User") }} -pwd {{ Lower (LanguageForID "Password") }} -pwdauth -keyauth
+                    <br>imb mailbox -name ItauProd -address portalb2b.itau-unibanco.com.br -user {{ Lower (LanguageForID "User") }} -pwd {{ Lower (LanguageForID "Password") }} -pwdauth -keyauth
+                    </p>
+                    <p>{{ LanguageForID "HelpConfigSendFolder" }}:</p>
+                    <p class="text-monospace rounded-lg bg-light p-1">imb sendfolder -mailbox ItauProd -alias "{{ LanguageForID "HelpSendFolderAlias" }}" -local $Path{{ PathSeparator }}Envio -remote /REMESSA -backup Enviados -backupdays 30</p>
+                    <p>{{ LanguageForID "HelpConfigReceiveFolder" }}:</p>
+                    <p class="text-monospace rounded-lg bg-light p-1">imb receivefolder -mailbox ItauProd -alias "{{ LanguageForID "HelpReceiveFolderAlias" }}" -local $Path{{ PathSeparator }}Recepcao -remote /RETORNO</p>
+
+                    <h5 class="my-3"><u>{{ LanguageForID "HelpAutorizedKeyFile" }}</u></h6>
+                    <p>{{ LanguageForID "HelpAutorizedKeyFileNote" }}:</p>
+                    <p class="text-monospace rounded-lg bg-light p-1">address:port keytype keyvalue</p>
+                    <p>{{ LanguageForID "SampleFile" }}:</p>
+                    <p class="text-monospace text-truncate rounded-lg bg-light p-1">
+                        portalb2b.itau-unibanco.com.br:22 ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAAAgQC4Ef9ne96iD2Y9Yxc7bfEMnU8bAjkqV52/AGFccBxPESoFtVCanbgnkd0Mt88+ysk1KnIC9ATRpLrpAWM+p7L9o4V4/Gvn/FIo7J7PjbJ/zZ1h6oW+yxvCxfN97bdqGJ/hRRpjJNGf3fBpLg7TrvuoWo8BC8Ip9p5x06EOkrXcQQ==
+                        <br>portalb2b-homolog.itau-unibanco.com.br:22 ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC8mUUsnM/e2+doDMHKL0nrj/30muiFWJ2Ps89ZAstidP9rFoOSrSTjtTHimFNWKxfIuYNPB2K7I6cag/q3ydTDspLwenFiVoRQ+NGbuA0Ba1xMlGdWG7+KeTdDXcYQTx/xwlj8ekZJNC3w2iyNg44Tix8xvxwK0jpAcedjo4IULULNMBveCNMZpE9/H6V9FHWPrS2VJQG4UQUhrRsKx7s56gNr1ymOD4hkbu6SesMAv2PSivdCpPlMGBwdYZ27c7bPuMx7tfGwjSwznyEfClpWTvKDBjm02GoUs/Y+BA+lbU2x6tT0zi0fmWWUppkLYAZkY6F9+odXI+Q1jzZVa5+f
+                    </p>
+
+                    <h5 class="my-3"><u>{{ LanguageForID "PrivateKey" }}</u></h6>
+                    <p>{{ LanguageForID "HelpPrivateKeyNote1" }} <a href="/keys">{{ LanguageForID "SSHKeys" }}</a>, {{ LanguageForID "HelpPrivateKeyNote2" }} <strong>puttygen</strong>, {{ LanguageForID "HelpPrivateKeyNote3" }}.</p>
+                    <p>{{ LanguageForID "SupportedFormats" }}:</p>
+                    <ul>
+                        <li>SSH2-DSA 1024bits</li>
+                        <li>SSH2-RSA 2048bits</li>
+                        <li>SSH2-RSA 4096bits</li>
+                        <li>SSH2-ECDSA 256</li>
+                        <li>SSH2-ECDSA 384</li>
+                        <li>SSH2-ECDSA 521</li>
+                        <li>SSH2-Ed25519</li>
+                    </ul>
+                    <p>{{ LanguageForID "SampleFile" }}:</p>
+                    <p class="text-monospace text-truncate rounded-lg bg-light p-1">
+                        -----BEGIN RSA PRIVATE KEY-----
+                    <br>MIIEogIBAAKCAQEAnSub7XqaalGlgtQWjgQEcNaQv6MvKpjVtnnUi5E4pfNKPigs
+                    <br>yAalC0FoRSl89FY/6py0/F8wRFBbFu3zkKhr+ZkGFU5gdp7bh6A4dPAoocTDKqbk
+                    <br>CmwITB+Fz95WMYlKAkhP3uSCLLxaOYQPr2DVfHUAO0omRHpCDRKgstXogMCKrtt7
+                    <br>QF44eUuqf55Pdsjc//B3l5DHh5Ln8UvIL1lu+XD3p+cCPzapTxwb4lw4P8ZDEHkE
+                    <br>4xNxSmn6ddxsh4OHHF8eIz0cZepjGv9AgJxgTRFuB7I2ZRGphukdaGUaY1NJ6bE4
+                    <br>WN/ML5qIayX0bbnho1hf58buAaD5f2IXqq+atQIBJQKCAQB/b3eCR7t4zJQJNld6
+                    <br>ERhbfYoe11as6p9xW9zEMI7LvlffXtgzewJcJzHy415lPwNkR7VXARJg5zUZgqnP
+                    <br>PHM5FEofHPREgM2sPLgndp18PqwUvqsPXoNEo+/0pm9mb1DDlJPJewHDaEknty9P
+                    <br>7aYtj0xLv5SmOZ1WtShZpoUqHky81kw9/eYvw/JKq1J4Q08XbEwtzRRM5v79O0K9
+                    <br>O1qyeNwMWLC0p2Lk6MEDr9JaC0UMOrQsN+tshVOmBNL7Xxj+y1EqbjedLhCSYrKS
+                    <br>Jg+cnD03A8U+Znr2smVsQaBq/RQz710o9kIwdTbdji6U0JcOPEjadRd0N9deS6Nx
+                    <br>2d6tAoGBANknN2lnvnC1noRiq480y/2uG2X7//4E7p8ivyfP+vwvqNxAVKFvFby5
+                    <br>O6FK/NqjsYw3XpuUqeAWJmWPRbnnihIrna/H1AorHBe3pNkssplu+2kiwnO5lWL8
+                    <br>3OnA/58X+vpYSZS0PLMjTccw5pC9QCyIKqW5zCjQQ/Fawvb8WiGhAoGBALlJaJGu
+                    <br>TQm79zcFH3QlIVMbWAj8rXS9ZUGFKfAxt2DLiGFYWDGK7BS/0nt5ObgK5K59OGj1
+                    <br>vjMdWuDvKlkUncUL171z4SL481kVNgKOmLOc7uyYjT5V/eIVhYNdnRNP7Prq85+t
+                    <br>2cdqIpco/vcKAPrN42BTv7DMscLJ7IHEDQiVAoGBAIEePJ+Jyy5Cee3ZzcrFcl98
+                    <br>R6RsUwW9vlDIjVXxSSBTsIL10XS+l02ekiiNc8BFp9bU0Hgu4Ywo2I9p8huCwMyI
+                    <br>ovLlhP8gjT6I3o73+33TSWEbljb4ubB6rN4EDZzd04AY0c4KTZryZZkIUb3YT6vG
+                    <br>leX/xYANIXrAWD/UUURtAoGACgP30IX2U42eqQcyIfQrUJmxu0vts0iCA4qoUiwz
+                    <br>bQQVNbG/k/mr5XInDZfZmz7b7cGUWLNWY6C4zeNqEqcrH2hshsf+VOrcuLUJ1p/s
+                    <br>lBZSGqB2VmWDWFQwuv4kKo6y3SF089/iQiFpp05S+JjByF4n9155EHnEa2TcWgqY
+                    <br>67UCgYEAqNMZrRw//vz+1X3QuPVuV0OLOwVqhAvP4PQJX70JAKVu3y0g6WBxyrYi
+                    <br>QKxHEJ4qW8jbuscLkedN/7GvYXSx139dwbRc4isXs/appI/SMVlLB9hDSyeAsejv
+                    <br>SN6EPn0RFvJHi2ukVP0PY32vEqoQNa5kvworqMHqywr66MjnwMU=
+                    <br>-----END RSA PRIVATE KEY-----                        
+                    </p>
+
+                    <h5 class="my-3"><u>{{ LanguageForID "HelpFileToBatchMode" }}</u></h6>
+                    <p>{{ LanguageForID "HelpFileToBatchModeNote1" }}:</p>
+                    <p class="text-monospace rounded-lg bg-light p-1">mailboxName command sourceFile targetFile backupFolder</p>
+                    <p>{{ LanguageForID "SampleFile" }}:</p>
+                    <p class="text-monospace text-truncate rounded-lg bg-light p-1">
+                        Itau put "c:\temp\{{ Lower (LanguageForID "File") }}.txt" "/Inbox/{{ Lower (LanguageForID "File") }}.txt" "c:\temp\backup"
+                    <br>Itau putdelete "c:\temp\{{ Lower (LanguageForID "File") }}2.txt" "/Inbox/{{ Lower (LanguageForID "File") }}2.txt"
+                    <br>Itau get "/Inbox/{{ Lower (LanguageForID "File") }}.txt" "c:\temp\{{ Lower (LanguageForID "File") }}.txt"
+                    <br>Itau getdelete "/Inbox/{{ Lower (LanguageForID "File") }}2.txt" "c:\temp\{{ Lower (LanguageForID "File") }}2.txt"
+                    </p>
+                    <p><strong>{{ LanguageForID "Note" }}: </strong>{{ LanguageForID "HelpFileToBatchModeNote2" }}.</p>
+
+                    <h5 class="my-3"><u>{{ LanguageForID "HelpFileEncryption" }}</u></h6>
+                    <p>{{ LanguageForID "HelpFileEncryptionNote1" }}</p>
+                    <p>{{ LanguageForID "HelpToEncryptFile" }}:</p>
+                    <p class="text-monospace rounded-lg bg-light p-1">imb encryptfile -in {{ Lower (LanguageForID "File") }}.txt -out {{ Lower (LanguageForID "File") }}.txt.enc -key Ch@veDeTeste#01NãoUsar!Está_é_apenas_1_exemplo!</p>
+                    <p>{{ LanguageForID "HelpToDecryptFile" }}:</p>
+                    <p class="text-monospace rounded-lg bg-light p-1">imb decryptfile -in {{ Lower (LanguageForID "File") }}.txt.enc -out {{ Lower (LanguageForID "File") }}.txt -key Ch@veDeTeste#01NãoUsar!Está_é_apenas_1_exemplo!</p>
+                    <p><strong>{{ LanguageForID "Note" }}: </strong>{{ LanguageForID "HelpFileEncryptionNote2" }}.</p>
+
+                    <h5 class="my-3"><u>{{ LanguageForID "HelpFileInfo" }}</u></h6>
+                    <p>{{ LanguageForID "HelpFileInfoNote1" }}</p>
+                    <p>{{ LanguageForID "HelpFileInfoOneFile" }}:</p>
+                    <p class="text-monospace rounded-lg bg-light p-1">imb fileinfo {{ Lower (LanguageForID "File") }}.txt</p>
+                    <p>{{ LanguageForID "HelpFileInfoNFile" }}:</p>
+                    <p class="text-monospace rounded-lg bg-light p-1">imb fileinfo {{ Lower (LanguageForID "File") }}.txt {{ Lower (LanguageForID "File") }}2.txt {{ Lower (LanguageForID "File") }}3.txt</p>
+    
+                    <h5 class="my-3"><u>{{ LanguageForID "HelpFileConvert" }}</u></h6>
+                    <p>{{ LanguageForID "HelpFileConvertNote1" }}</p>
+                    <p>{{ LanguageForID "HelpToConvertFileWindows" }}:</p>
+                    <p class="text-monospace rounded-lg bg-light p-1">imb convert -in {{ Lower (LanguageForID "File") }}.txt -out {{ Lower (LanguageForID "File") }}2.txt -format windows</p>
+                    <p>{{ LanguageForID "HelpToConvertFileLinux" }}:</p>
+                    <p class="text-monospace rounded-lg bg-light p-1">imb convert -in {{ Lower (LanguageForID "File") }}.txt -out {{ Lower (LanguageForID "File") }}2.txt -format linux</p>
+        
+                </div>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/popper.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+
+</body>
+
+</html>
+{{ end }}
