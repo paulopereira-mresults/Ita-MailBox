@@ -11,19 +11,20 @@ RUN dpkg --add-architecture i386 && apt-get update && apt-get install -y \
 # Define o diretório de trabalho
 WORKDIR /home/itau/imb
 
-# Copia os arquivos locais da pasta imb/ para o container
-COPY imb/ ./home/itau/imb/
-COPY entrypoint.sh /entrypoint.sh
+# Copia o conteúdo da pasta local imb/ para dentro do container
+COPY imb/ /home/itau/imb/
 
-# Dá permissão de execução ao binário
-RUN chmod +x /entrypoint.sh ./home/itau/imb/
+# Dá permissão de execução ao script e ao binário
+RUN chmod +x /home/itau/imb/entrypoint.sh /home/itau/imb/imb
 
-# Preload da biblioteca .so (caminho absoluto no container!)
-RUN echo "/home/itau/imb/imb createkey"
+# Preload da biblioteca
 RUN echo "/home/itau/imb/imb.so" > /etc/ld.so.preload
 
-# Expõe a porta (caso necessário)
+# Expõe a porta
 EXPOSE 8080
 
-# Comando padrão
-CMD ["./imb", "start"]
+# Define o ENTRYPOINT corretamente
+ENTRYPOINT ["/home/itau/imb/entrypoint.sh"]
+
+# Argumentos padrão passados ao entrypoint
+CMD ["start"]

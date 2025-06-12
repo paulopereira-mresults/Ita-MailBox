@@ -19,7 +19,7 @@
       "address": "lb.sfg.prod.cloud.itau.com.br",
       "port": 22,
       "user": "user",
-      "publickey_authentication": true,
+      "publickey_authentication": false,
       "connection_interval": 10,
       "sessions": 4,
       "protocol": "SFTP",

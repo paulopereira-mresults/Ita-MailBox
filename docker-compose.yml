@@ -5,8 +5,8 @@ services:
     ports:
       - "8080:8080"
     restart: unless-stopped
-    volumes:
-      - ./imb:/home/itau/imb/
+    # volumes:
+    #   - ./imb:/home/itau/imb/
     environment:
       - IMB_PORT=8080
       - IMB_USER=...
